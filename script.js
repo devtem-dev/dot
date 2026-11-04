@@ -49,17 +49,24 @@
     data.authorised = form.elements.authorised.checked;
     rbtn.disabled = true;
     status.textContent = 'Sending...';
-    fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).then(function (r) {
-      if (!r.ok) throw new Error('bad');
-      window.location.href = '/thanks.html';
-    }).catch(function () {
-      rbtn.disabled = false;
-      status.className = 'status err';
-      status.textContent = 'Could not send. Check the fields and try again.';
-    });
+  fetch(WORKER_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+}).then(function (r) {
+  return r.json().catch(function () { return {}; }).then(function (body) {
+    if (!r.ok) {
+      console.error('Form failed:', r.status, body);
+      throw new Error(body.error || 'HTTP ' + r.status);
+    }
+    window.location.href = '/thanks.html';
+  });
+}).catch(function (error) {
+  rbtn.disabled = false;
+  status.className = 'status err';
+  status.textContent = 'Could not send (' + error.message + '). Try again.';
+  console.error(error);
+});
   });
 })();
+
