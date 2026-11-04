@@ -36,7 +36,7 @@
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  var WORKER_URL = 'https://dot-form.YOUR-SUBDOMAIN.workers.dev';
+  var WORKER_URL = 'https://api.testers.devtem.org';
   var form = document.getElementById('reqForm');
   var rbtn = document.getElementById('reqBtn');
   var status = document.getElementById('reqStatus');
